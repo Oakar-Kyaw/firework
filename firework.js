@@ -1,7 +1,10 @@
 (() => {
     const canvas = document.getElementById('firework');
     const context = canvas.getContext('2d');
-
+    const audio = document.querySelector("#audio");
+    const audio1 = document.querySelector("#audio1");
+    const hbps=new Audio('song/hbps.m4a')
+    hbps.play()
     const width = window.innerWidth;
     const height = window.innerHeight;
 
@@ -33,7 +36,22 @@
     canvas.height = height;
     
     image.src = 'image/wand.png';
-
+    function avadaplay(){
+        avadastop()
+        audio.play()
+    }
+    function avadastop(){
+        audio.pause()
+        audio.currentTime=0
+    }
+    function deathplay(){
+        deathstop()
+        audio1.play()
+    }
+    function deathstop(){
+        audio1.pause()
+        audio1.currentTime=0
+    }
     const drawWand = () => {
         positions.wandX = (width * .91) - image.width;
         positions.wandY = (height * .93) - image.height;
@@ -75,7 +93,12 @@
         drawWand();
 
         if (mouseClicked) {
-            fireworks.push(new Firework());
+            avadaplay()
+            fireworks.push(new Firework())
+            deathplay()
+            
+            
+            
         }
         
         let fireworkIndex = fireworks.length;
@@ -109,9 +132,9 @@
 
             this.coordinates = [];
             this.angle = Math.atan2(this.ty - positions.wandY, this.tx - positions.wandX);
-            this.speed = 20;
+            this.speed =20;
             this.friction = .99;
-            this.hue = 147;
+            this.hue = 138;
 
             while (fireworkLength--) {
                 this.coordinates.push([this.x, this.y]);
@@ -140,6 +163,7 @@
             } else {
                 this.x += vx;
                 this.y += vy;
+                
             }
         }
 
@@ -151,8 +175,9 @@
 
             context.strokeStyle = `hsl(${this.hue}, 50%, 47%)`;
             context.stroke();
-
+            
             this.animate(index);
+            
         }
 
         init();
@@ -195,9 +220,11 @@
         context.beginPath()
         context.moveTo(this.coordinate[this.coordinate.length-1][0],this.coordinate[this.coordinate.length-1][1])
         context.lineTo(this.x,this.y)
-        context.strokeStyle=`hsla(${this.hue},100%,50%, ${this.alpha})`
+        context.strokeStyle=`hsla(${this.hue},100%,50%, )`
         context.stroke()
+       
         this.animate(index)
+         
     }   
     
     
